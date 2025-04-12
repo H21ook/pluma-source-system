@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pluma - Нүүр хуудас</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="../../css/main.css" />
+    <script src="../../js/worksheet.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #f8a698;
+        --color-primary-50: #fef6f5;
+        --color-primary-foreground: #ffffff;
+        --color-primary-light: #ffa69e;
+        --color-primary-dark: #eb8b80;
+        --color-text-disabled: #919eab;
+        --color-text-primary: #212b36;
+        --color-text-secondary: #637381;
+        --color-divider: #dce4e8;
+        --font-manrope: "Manrope", sans-serif;
+      }
+
+      body {
+        @apply font-manrope text-sm font-normal text-text-primary border-gray-200;
+      }
+
+      .plumaLabel {
+        @apply block text-sm text-text-primary;
+      }
+
+      .plumaInput {
+        @apply px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-light shadow-sm placeholder:text-text-disabled text-sm align-middle;
+      }
+
+      .plumaSearchInput {
+        @apply pr-3 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-primary-light placeholder:text-text-disabled text-base align-middle;
+      }
+
+      .plumaButton {
+        @apply font-medium py-2.5 px-4 rounded-md transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+      }
+
+      .plumaPrimaryButton {
+        @apply bg-primary hover:bg-primary-dark text-primary-foreground font-medium py-2.5 px-4 rounded-md transition duration-200;
+      }
+
+      .plumaCheckbox {
+        @apply appearance-none relative size-5 rounded-sm cursor-pointer border border-gray-200 checked:bg-primary focus:outline-none focus:ring-1 focus:ring-primary-light checked:after:content-[''] checked:after:absolute checked:after:left-[7px] checked:after:top-[3px] checked:after:w-[5px] checked:after:h-[10px] checked:after:border-r-2 checked:after:border-b-2 checked:after:border-solid checked:after:border-primary-foreground checked:after:rotate-45;
+      }
+
+      .plumaIconButton {
+        @apply size-10 rounded-lg flex items-center justify-center transition duration-200 hover:bg-black/10;
+      }
+
+      .categoryItem {
+        @apply py-2.5 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer border-b-2 flex items-center gap-2;
+      }
+
+      .activeCategoryItem {
+        @apply text-text-primary border-primary;
+      }
+
+      .inactiveCategoryItem {
+        @apply text-text-secondary border-transparent hover:text-text-primary;
+      }
+
+      .menuItem {
+        @apply py-3 px-4 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer rounded-md flex items-center gap-4;
+      }
+
+      .activeMenuItem {
+        @apply bg-primary/[8%] text-primary;
+      }
+
+      .inactiveMenuItem {
+        @apply text-text-secondary hover:bg-black/5;
+      }
+
+      .paginationButton {
+        @apply size-10 flex items-center justify-center rounded-md text-base font-medium transition-all duration-200 cursor-pointer hover:bg-black/5;
+      }
+
+      .paginationMoreButton {
+        @apply size-10 flex items-center justify-center rounded-md text-base font-medium;
+      }
+    </style>
+  </head>
+  <body onload="init('index')">
+    <!-- 1. sidebar
+    2. header -->
+
+    <div class="grid grid-cols-[300px_minmax(300px,_1fr)] h-screen">
+      <!-- sidebar -->
+      <div class="w-[300px] h-screen bg-white border-r border-gray-200">
+        <nav class="px-3 py-5">
+          <div class="px-4 pb-8 pt-5">
+            <img
+              src="../../assets/images/logo.svg"
+              alt="Pluma logo"
+              class="w-[110px] object-contain"
+            />
+          </div>
+          <ul class="flex flex-col mt-2 space-y-4">
+            <li class="menuItem activeMenuItem">
+              <img
+                src="../../assets/icons/home.svg"
+                alt="home"
+                class="size-6"
+              />
+              Нүүр хуудас
+            </li>
+            <!-- <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/briefcase.svg"
+                alt="briefcase"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li> -->
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/document.svg"
+                alt="document"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/bolt.svg"
+                alt="bolt"
+                class="size-6"
+              />
+              Төлбөртэй мэдээ
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/users-group.svg"
+                alt="users-group"
+                class="size-6"
+              />
+              Сэтгүүлчийн жагсаалт
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/calendar.svg"
+                alt="calendar"
+                class="size-6"
+              />
+              Календар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/wallet.svg"
+                alt="wallet"
+                class="size-6"
+              />
+              Төлбөр тооцоо
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main>
+        <!-- header -->
+        <header
+          class="flex items-center justify-between py-6 px-10 border-b border-gray-200"
+        >
+          <div class="relative z-0 lg:max-w-[300px] w-full">
+            <div
+              class="absolute z-[-1] rounded-md bg-gray-100 flex items-center size-full pl-4"
+            >
+              <img
+                src="../../assets/icons/search.svg"
+                alt="search"
+                class="size-5"
+              />
+            </div>
+            <input
+              class="plumaSearchInput w-full pl-12 bg-transparent"
+              type="text"
+              placeholder="Хайх"
+            />
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="dropdownItem relative inline-block text-left">
+              <button class="toggleDropdown plumaIconButton bg-gray-100">
+                <img
+                  src="../../assets/icons/bell.svg"
+                  alt="notification"
+                  class="text-text-secondary size-6"
+                />
+              </button>
+
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-[300px] rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div class="flex items-center justify-between">
+                      <div class="px-3 py-2">
+                        <p class="font-semibold">Мэдэгдэл</p>
+                        <span class="text-xs text-text-secondary"
+                          >Шинээр 4 мэдэгдэл ирсэн байна</span
+                        >
+                      </div>
+                      <img
+                        alt="double-check"
+                        src="../../assets/icons/double-check.svg"
+                        class="size-6 m-2"
+                      />
+                    </div>
+                  </li>
+
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2 border-t border-gray-200">
+                    <button class="plumaButton w-full border border-gray-200">
+                      Бүгдийг үзэх
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="dropdownItem relative inline-block text-left">
+              <div
+                class="toggleDropdown flex items-center gap-2 hover:bg-black/5 rounded-md px-2 cursor-pointer"
+              >
+                <img
+                  src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
+                  alt="Author Image"
+                  class="rounded-full size-10"
+                />
+                <div>
+                  <div class="flex items-center gap-2">
+                    <p class="font-bold">Б.Батбаяр</p>
+                  </div>
+                  <p class="text-xs text-text-secondary">Админ</p>
+                </div>
+                <svg
+                  class="-mr-1 ml-2 h-5 w-5 text-text-secondary cursor-pointer"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      <p class="font-semibold">Э.Тулгаа</p>
+                      <span class="text-xs text-text-secondary"
+                        >tulgaa@gmail.com</span
+                      >
+                    </div>
+                  </li>
+                  <div class="space-y-1 p-2">
+                    <li class="px-3 py-2 rounded-md hover:bg-[#919EAB14]">
+                      Хувийн мэдээлэл
+                    </li>
+                    <li
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Тохиргоо
+                    </li>
+                  </div>
+                  <li class="border-t border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Гарах
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="h-[calc(100vh-90px)] overflow-y-auto">
+          <div class="p-10 max-w-[1600px] min-w-5xl mx-auto space-y-6">
+            <div class="flex items-center justify-between">
+              <h1 class="text-2xl font-bold">Ажлын талбар</h1>
+
+              <button class="plumaPrimaryButton">Шинэ source үүсгэх</button>
+            </div>
+
+            <div class="flex items-center justify-between gap-8">
+              <div class="relative">
+                <ul
+                  class="flex gap-8 overflow-hidden items-center"
+                  id="categoryList"
+                >
+                  <li
+                    class="categoryItem activeCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Бүгд
+                    <div
+                      class="flex items-center justify-center size-5 rounded-md bg-gray-200 text-xs font-semibold"
+                    >
+                      1
+                    </div>
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Ноорог
+                    <div
+                      class="flex items-center justify-center size-5 rounded-md bg-gray-200 text-xs font-semibold"
+                    >
+                      5
+                    </div>
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Илгээгдсэн
+                    <div
+                      class="flex items-center justify-center size-5 rounded-md bg-gray-200 text-xs font-semibold"
+                    >
+                      2
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div id="tabs">
+              <div id="tab1" class="space-y-6">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="bg-[#F8FAFC] border-b border-gray-200">
+                      <th class="p-4 font-medium rounded-tl-lg">Гарчиг</th>
+                      <th class="p-4 font-medium">Төлөв</th>
+                      <th class="p-4 font-medium">Үүссэн огноо</th>
+                      <th class="p-4 font-medium">Last Updated</th>
+                      <th class="p-4 font-medium rounded-tr-lg">Үйлдэл</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="flex items-center mt-6 gap-2">
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5 align-middle"
+                  >
+                    « Previous
+                  </button>
+                  <ul class="flex gap-2">
+                    <li>
+                      <button class="paginationButton bg-gray-200">1</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">2</button>
+                    </li>
+                    <li class="">
+                      <button class="paginationMoreButton">...</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">10</button>
+                    </li>
+                  </ul>
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5"
+                  >
+                    Next »
+                  </button>
+                </div>
+              </div>
+
+              <div id="tab2" class="space-y-6 hidden">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="bg-[#F8FAFC] border-b border-gray-200">
+                      <th class="p-4 font-medium rounded-tl-lg">Гарчиг</th>
+                      <th class="p-4 font-medium">Төлөв</th>
+                      <th class="p-4 font-medium">Үүссэн огноо</th>
+                      <th class="p-4 font-medium">Last Updated</th>
+                      <th class="p-4 font-medium rounded-tr-lg">Үйлдэл</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#919EAB52] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Ноорог
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="flex items-center mt-6 gap-2">
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5 align-middle"
+                  >
+                    « Previous
+                  </button>
+                  <ul class="flex gap-2">
+                    <li>
+                      <button class="paginationButton bg-gray-200">1</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">2</button>
+                    </li>
+                    <li class="">
+                      <button class="paginationMoreButton">...</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">10</button>
+                    </li>
+                  </ul>
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5"
+                  >
+                    Next »
+                  </button>
+                </div>
+              </div>
+              <div id="tab3" class="space-y-6 hidden">
+                <table class="w-full border-collapse">
+                  <thead>
+                    <tr class="bg-[#F8FAFC] border-b border-gray-200">
+                      <th class="p-4 font-medium rounded-tl-lg">Гарчиг</th>
+                      <th class="p-4 font-medium">Төлөв</th>
+                      <th class="p-4 font-medium">Үүссэн огноо</th>
+                      <th class="p-4 font-medium">Last Updated</th>
+                      <th class="p-4 font-medium rounded-tr-lg">Үйлдэл</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr class="border-b border-gray-200">
+                      <td class="px-4 max-w-[200px] truncate font-medium">
+                        Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                      </td>
+                      <td class="p-4 text-center">
+                        <div
+                          class="text-center w-fit mx-auto rounded-md border border-[#54D62C] text-[#54D62C] px-2 text-[10px] font-semibold py-1"
+                        >
+                          Илгээгдсэн
+                        </div>
+                      </td>
+                      <td class="p-4 text-center">2024-10-07</td>
+                      <td class="p-4 text-center">2024-10-07</td>
+
+                      <td class="p-4 text-center">
+                        <div
+                          class="dropdownItem relative inline-block text-left"
+                        >
+                          <button
+                            class="toggleDropdown plumaIconButton border border-gray-200"
+                          >
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              alt="more-horizontal.svg"
+                              class="size-4"
+                            />
+                          </button>
+                          <div
+                            class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+                          >
+                            <div
+                              class="p-2"
+                              role="menu"
+                              aria-orientation="vertical"
+                              aria-labelledby="dropdownButton"
+                            >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Дэлгэрэнгүй</a
+                              >
+                              <a
+                                href="#"
+                                class="block px-3 py-2 hover:bg-gray-100"
+                                role="menuitem"
+                                >Нийтлүүлэхээр илгээх</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+
+                <div class="flex items-center mt-6 gap-2">
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5 align-middle"
+                  >
+                    « Previous
+                  </button>
+                  <ul class="flex gap-2">
+                    <li>
+                      <button class="paginationButton bg-gray-200">1</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">2</button>
+                    </li>
+                    <li class="">
+                      <button class="paginationMoreButton">...</button>
+                    </li>
+                    <li>
+                      <button class="paginationButton">10</button>
+                    </li>
+                  </ul>
+                  <button
+                    class="px-3 h-10 text-base font-medium rounded-md transition-all duration-200 hover:bg-black/5"
+                  >
+                    Next »
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

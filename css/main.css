@@ -1,0 +1,343 @@
+:root {
+  --fc-button-bg-color: #ffffff;
+  --fc-button-border-color: #ffffff;
+  --fc-button-text-color: #637381;
+  --fc-button-hover-bg-color: #0000000a;
+  --fc-button-hover-border-color: #00000000;
+  --fc-button-active-bg-color: #0000000a;
+  --fc-button-active-border-color: #00000000;
+}
+
+.leftSideBackground {
+  background: url(../assets/images/auth/bg-pattern.png),
+    url(../assets/images/auth/bg.jpg);
+  background-size: auto, cover;
+  background-repeat: repeat, no-repeat;
+  background-position: auto, center;
+}
+
+.ql-container {
+  border: 0px solid black !important;
+  background-color: white;
+}
+
+/* Editor-ийн агуулга */
+.ql-editor {
+  font-family: "Manrope", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  min-height: 200px;
+  color: #637381 !important;
+  padding: 0 0 80px 0 !important;
+}
+
+/* Placeholder */
+.ql-blank::before {
+  /* content: "Энд бичнэ үү..."; */
+  color: #919eab !important;
+  font-size: 16px !important;
+  font-style: normal !important;
+  padding: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+}
+
+/* Editor focus үед */
+.ql-container.ql-snow.ql-focused {
+  border-color: #4299e1;
+  box-shadow: 0 0 0 2px rgba(66, 153, 225, 0.5);
+}
+
+.plumaRadio {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #e5e7eb;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+/* Сонгогдсон үед загвар */
+.plumaRadio:checked {
+  border-color: #f8a698;
+  background-color: #f8a698;
+}
+
+/* Сонгогдсон үед дотрын цэг */
+.plumaRadio:checked::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 10px;
+  height: 10px;
+  background-color: white;
+  border-radius: 50%;
+}
+
+.xdsoft_datetimepicker {
+  border-radius: 6px;
+  border-color: #e5e7eb;
+  font-family: "Manrope", sans-serif;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar th {
+  background-color: white;
+  color: #212b36;
+  font-weight: 700;
+}
+.xdsoft_datetimepicker .xdsoft_calendar td {
+  background-color: white;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_other_month,
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_disabled,
+.xdsoft_datetimepicker .xdsoft_time_box > div > div.xdsoft_disabled {
+  color: #637381;
+  opacity: 1;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td,
+.xdsoft_datetimepicker .xdsoft_calendar th {
+  border: none;
+  color: #212b36;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td:hover,
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div:hover {
+  background: #f8a69833 !important;
+  border-radius: 4px;
+  color: #f8a698 !important;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_default,
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_current,
+.xdsoft_datetimepicker
+  .xdsoft_timepicker
+  .xdsoft_time_box
+  > div
+  > div.xdsoft_current {
+  background: #f8a698 !important;
+  border-radius: 4px;
+  color: white !important;
+  box-shadow: none !important;
+}
+
+.xdsoft_datetimepicker .xdsoft_calendar td.xdsoft_today {
+  color: #f8a698;
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box {
+  border-radius: 6px;
+}
+
+.xdsoft_datetimepicker .xdsoft_timepicker .xdsoft_time_box > div > div {
+  border: none;
+  background-color: white;
+}
+
+/* month, year select color */
+.xdsoft_datetimepicker
+  .xdsoft_label
+  > .xdsoft_select
+  > div
+  > .xdsoft_option.xdsoft_current {
+  box-shadow: none;
+  background-color: #f8a698;
+}
+
+.xdsoft_datetimepicker
+  .xdsoft_label
+  > .xdsoft_select
+  > div
+  > .xdsoft_option:hover {
+  background: #f8a69833;
+  color: #f8a698;
+  box-shadow: none;
+}
+
+.fc .fc-toolbar.fc-header-toolbar {
+  padding: 0 20px;
+}
+
+.fc-toolbar-chunk {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fc-toolbar-title {
+  font-size: 20px;
+  font-weight: 500;
+}
+.fc-col-header-cell-cushion {
+  color: #212b36;
+}
+
+.fc-theme-standard td,
+.fc-theme-standard th {
+  border-color: #e5e7eb;
+}
+
+.fc .fc-button-primary:not(:disabled).fc-button-active:focus,
+.fc .fc-button-primary:not(:disabled):active:focus,
+.fc .fc-button-primary:focus {
+  box-shadow: none;
+}
+
+.fc .fc-button-primary {
+  border-radius: 6px;
+}
+
+/* Datepicker-ийн style */
+
+.qs-datepicker-container {
+  border: none;
+  transform: translateY(12px);
+}
+
+/* Overlay */
+.qs-overlay-month-container {
+  margin: 8px 0;
+}
+.qs-overlay-year:focus {
+  outline: none;
+}
+
+.qs-overlay .qs-overlay-month {
+  color: white;
+  font-size: 12px;
+  opacity: 1;
+  border-radius: 4px;
+}
+.qs-overlay .qs-overlay-month:hover {
+  background-color: #ffffff44;
+}
+.qs-overlay .qs-submit {
+  padding: 4px 16px;
+  font-size: 12px;
+}
+.qs-datepicker {
+  border: 1px solid #ebe6e7;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Удирдлагын хэсэг (сар, жил сонгох) */
+.qs-controls {
+  background-color: #f8a698;
+  color: white;
+  padding: 4px;
+  border-radius: 6px 6px 0 0;
+}
+
+.qs-month-year {
+  font-size: 14px;
+}
+/* Өдрүүдийг харуулах хэсэг */
+.qs-squares {
+  padding: 8px;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+/* Өдөр бүрийн элемент */
+.qs-square {
+  color: #212b36;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 4px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+}
+
+.qs-square:not(.qs-empty):not(.qs-disabled):not(.qs-day):not(.qs-active):hover {
+  background-color: #ebe6e7;
+}
+/* Сонгогдсон өдөр */
+.qs-active {
+  background-color: #f8a698;
+  color: white;
+}
+
+/* Одоогийн өдөр */
+.qs-current {
+  font-weight: bold;
+  color: #f8a698;
+  text-decoration: none;
+}
+
+.qs-overlay {
+  background-color: #f8a698;
+  color: white;
+}
+
+.calendar {
+  width: 100%;
+  min-width: 280px;
+}
+.calendar-header {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+.calendar-buttons {
+  display: flex;
+  gap: 8px;
+  justify-content: space-between;
+}
+.calendar-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  justify-content: space-between;
+}
+
+.calendar-week {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.calendar-day {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 40px;
+  font-weight: 500;
+  font-size: 18px;
+  color: #666666;
+  pointer-events: none;
+}
+
+.calendar-day:hover {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.calendar-day.normal {
+  pointer-events: auto;
+}
+
+.calendar-day.empty {
+  border: none;
+}
+
+.calendar-day.header {
+  font-weight: bold;
+  color: #333333;
+}
+
+.calendar-day.today {
+  background-color: #f8a698;
+  color: white;
+  font-weight: bold;
+  pointer-events: auto;
+}
