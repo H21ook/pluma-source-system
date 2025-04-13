@@ -12,7 +12,7 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="../../css/main.css" />
-    <script src="../../js/paid-news.js"></script>
+    <script src="../../js/journalist.js"></script>
     <style type="text/tailwindcss">
       @theme {
         --color-primary: #f8a698;
@@ -92,7 +92,7 @@
       }
     </style>
   </head>
-  <body onload="init('news-write')">
+  <body onload="init('create')">
     <!-- 1. sidebar
     2. header -->
 
@@ -388,9 +388,6 @@
                 <h1 class="text-2xl font-bold">Төлбөртэй мэдээний жагсаалт</h1>
               </div>
               <div class="flex items-center gap-4">
-                <button id="cancel" class="plumaButton border border-gray-200">
-                  Болих
-                </button>
                 <button
                   id="backStep"
                   class="plumaButton border border-gray-200 hidden"
@@ -405,82 +402,9 @@
                 >
                   Үргэлжлүүлэх
                 </button>
-                <div>
-                  <div
-                    id="modal"
-                    class="hidden fixed z-10 inset-0 bg-black/50 flex items-center justify-center no-scrollbar"
-                  >
-                    <div
-                      class="relative bg-white p-6 rounded-lg shadow-md w-full mx-4 md:w-lg"
-                    >
-                      <div class="w-full flex items-start justify-between">
-                        <div class="space-y-2">
-                          <h3 class="text-2xl font-semibold">Баталгаажуулах</h3>
-                        </div>
-
-                        <button
-                          class="closeModal plumaIconButton bg-gray-100 border border-gray-200"
-                        >
-                          <img
-                            alt="close"
-                            src="../../assets/icons/close.svg"
-                            class="size-5"
-                          />
-                        </button>
-                      </div>
-
-                      <div
-                        class="rounded-lg border border-gray-200 p-2 mt-8 space-y-3"
-                      >
-                        <div class="flex items-center gap-4 justify-between">
-                          <p class="text-text-secondary w-[140px]">Сэтгүүлч</p>
-                          <p class="font-semibold flex-1 text-end">Э. Тулгаа</p>
-                        </div>
-                        <div class="flex items-center gap-4 justify-between">
-                          <p class="text-text-secondary w-[140px]">
-                            Мэдээний төрөл
-                          </p>
-                          <p class="font-semibold flex-1 text-end">
-                            Эрүүл мэнд
-                          </p>
-                        </div>
-                        <div class="flex items-center gap-4 justify-between">
-                          <p class="text-text-secondary w-[140px]">
-                            Яаралтай эсэх
-                          </p>
-                          <p class="font-semibold flex-1 text-end">Үгүй</p>
-                        </div>
-                        <div class="flex items-center gap-4 justify-between">
-                          <p class="text-text-secondary w-[140px]">
-                            Товч мэдээлэл
-                          </p>
-                          <p class="font-semibold flex-1 text-end">
-                            Lorem ipsum dolor sit amet consectetur. Nunc aenean
-                            ultricies blandit convallis lacinia arcu sit cursus.
-                          </p>
-                        </div>
-                        <div class="flex items-center gap-4 justify-between">
-                          <p class="text-text-secondary w-[140px]">Төлбөр</p>
-                          <p class="font-semibold flex-1 text-end">₮30,000</p>
-                        </div>
-                      </div>
-
-                      <div class="flex items-center gap-4 mt-8">
-                        <button
-                          class="closeModal plumaButton flex-1 border border-gray-200"
-                        >
-                          Болих
-                        </button>
-                        <button class="plumaPrimaryButton flex-1">
-                          Илгээх
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                  <button id="sentOpenModal" class="plumaPrimaryButton">
-                    Илгээх
-                  </button>
-                </div>
+                <button id="createGroup" class="plumaPrimaryButton hidden">
+                  Групп үүсгэх
+                </button>
               </div>
             </div>
 
@@ -494,10 +418,6 @@
                   id="stepIndecator2"
                   class="flex-1 rounded-full h-3 bg-gray-200"
                 ></div>
-                <div
-                  id="stepIndecator3"
-                  class="flex-1 rounded-full h-3 bg-gray-200"
-                ></div>
               </div>
               <div id="step1" class="stepContent space-y-6">
                 <div class="border border-gray-200 rounded-lg p-6 space-y-6">
@@ -505,9 +425,7 @@
                     <h1 class="text-xl font-semibold">
                       Алхам 1 - Сэтгүүлч сонгох
                     </h1>
-                    <p class="text-text-secondary">
-                      Та төлбөртэй мэдээ бичүүлэх сэтгүүлч сонгоно уу.
-                    </p>
+                    <p class="text-text-secondary">Та сэтгүүлчээ сонгоно уу.</p>
                   </div>
 
                   <div class="flex items-center justify-between">
@@ -723,83 +641,6 @@
                       </div>
                     </div>
 
-                    <div>
-                      <label>Групп<span class="text-[#DC3545]">*</span></label>
-                      <div class="select relative mt-1">
-                        <button
-                          type="button"
-                          class="selectButton w-full h-10 border px-4 border-gray-200 rounded-md flex items-center gap-1 min-w-fit"
-                        >
-                          <div
-                            class="selectTitle text-start whitespace-nowrap text-xs font-medium w-full"
-                          >
-                            <span>Миний үүсгэсэн сэтгүүлчийн групп</span>
-                          </div>
-                          <div class="size-4">
-                            <img
-                              src="../../assets/icons/arrow-right.svg"
-                              alt="arrow-right"
-                              class="size-4 rotate-90"
-                            />
-                          </div>
-                        </button>
-                        <div
-                          class="selectMenu origin-top-right absolute right-0 mt-2 z-10 min-w-56 w-full rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 p-2 hidden max-h-[180px] overflow-y-auto"
-                        >
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>Миний үүсгэсэн сэтгүүлчийн групп</div>
-                          </div>
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>Хов жив</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div>
-                      <label
-                        >Таалагдсан сэтгүүлч<span class="text-[#DC3545]"
-                          >*</span
-                        ></label
-                      >
-                      <div class="select relative mt-1">
-                        <button
-                          type="button"
-                          class="selectButton w-full h-10 border px-4 border-gray-200 rounded-md flex items-center gap-1 min-w-fit"
-                        >
-                          <div
-                            class="selectTitle text-start whitespace-nowrap text-xs font-medium w-full"
-                          >
-                            <span>Бүгд</span>
-                          </div>
-                          <div class="size-4">
-                            <img
-                              src="../../assets/icons/arrow-right.svg"
-                              alt="arrow-right"
-                              class="size-4 rotate-90"
-                            />
-                          </div>
-                        </button>
-                        <div
-                          class="selectMenu origin-top-right absolute right-0 mt-2 z-10 min-w-56 w-full rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 p-2 hidden max-h-[180px] overflow-y-auto"
-                        >
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>С. Хулан</div>
-                          </div>
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>Б. Бат-Эрдэнэ</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
                     <div class="grid grid-cols-3 col-span-2 gap-6">
                       <div
                         class="relative bg-gray-50 rounded-lg p-10 flex flex-col items-center gap-4"
@@ -807,7 +648,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -844,7 +685,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -881,7 +722,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -918,7 +759,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -955,7 +796,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -992,7 +833,7 @@
                         <button
                           data-active="false"
                           type="button"
-                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-white right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
+                          class="toggleButton absolute top-4 rounded-md transition-all duration-200 cursor-point hover:brightness-90 data-[active='false']:bg-gray-100 right-4 data-[active='true']:bg-primary size-10 flex items-center justify-center"
                         >
                           <img
                             alt="check"
@@ -1031,272 +872,16 @@
                 <div class="border border-gray-200 rounded-lg p-6 space-y-6">
                   <div class="space-y-2">
                     <h1 class="text-xl font-semibold">
-                      Алхам 2 - Ерөнхий мэдээлэл
+                      Алхам 2 - Групп нэр өгнө үү
                     </h1>
-                    <p class="text-text-secondary">
-                      Та төлбөртэй мэдээний ерөнхий мэдээлэл оруулна уу
-                    </p>
+                    <p class="text-text-secondary">Групп нэр өгнө үү</p>
                   </div>
 
-                  <div class="grid grid-cols-2 gap-4">
-                    <div>
-                      <label
-                        >Мэдээний төрөл<span class="text-[#DC3545]"
-                          >*</span
-                        ></label
-                      >
-                      <div class="select relative mt-1">
-                        <button
-                          type="button"
-                          class="selectButton w-full h-10 border px-4 border-gray-200 rounded-md flex items-center gap-1 min-w-fit"
-                        >
-                          <div
-                            class="selectTitle text-start whitespace-nowrap text-xs font-medium w-full"
-                          >
-                            <span>Эдийн засаг</span>
-                          </div>
-                          <div class="size-4">
-                            <img
-                              src="../../assets/icons/arrow-right.svg"
-                              alt="arrow-right"
-                              class="size-4 rotate-90"
-                            />
-                          </div>
-                        </button>
-                        <div
-                          class="selectMenu origin-top-right absolute right-0 mt-2 z-10 min-w-56 w-full rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 p-2 hidden max-h-[180px] overflow-y-auto"
-                        >
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>Эдийн засаг</div>
-                          </div>
-                          <div
-                            class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
-                          >
-                            <div>Эрүүл мэнд</div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div class="pt-8">
-                      <label
-                        class="group flex items-center cursor-pointer gap-4 peer"
-                      >
-                        <span>Яаралтай мэдээ</span>
-                        <input
-                          type="checkbox"
-                          id="toggleSwitch"
-                          class="sr-only"
-                        />
-                        <div
-                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
-                        >
-                          <div
-                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
-                          ></div>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-
-                  <div class="relative">
+                  <div class="flex flex-col w-[300px] gap-1">
                     <label
-                      class="absolute bg-white -top-2 left-2 px-1 text-xs text-text-secondary"
-                      >Товч мэдээлэл</label
+                      >Групп нэр<span class="text-[#DC3545]">*</span></label
                     >
-                    <textarea
-                      class="w-full resize-none p-4 border border-gray-200 rounded-md focus:outline-none focus:border-primary"
-                      placeholder="Товч мэдээлэл"
-                      rows="4"
-                    ></textarea>
-                  </div>
-
-                  <div>
-                    <div class="mb-2">Хавсралт файл</div>
-                    <label
-                      for="fileInput"
-                      class="py-6 bg-gray-50 rounded-lg w-full flex flex-col items-center gap-4 cursor-pointer select-none"
-                    >
-                      <img
-                        alt="image"
-                        src="../../assets/icons/image.svg"
-                        class="size-10"
-                      />
-                      <p>
-                        <span class="text-primary">Upload a file</span> or drag
-                        and drop
-                      </p>
-                      <p class="text-text-secondary">
-                        PNG, JPG, , GIF up to 5MB
-                      </p>
-                    </label>
-                    <input
-                      id="fileInput"
-                      type="file"
-                      accept=".jpg,.png,.jpeg,.gif"
-                      hidden
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div id="step3" class="stepContent space-y-6 hidden">
-                <div class="border border-gray-200 rounded-lg p-6 space-y-6">
-                  <div class="space-y-2">
-                    <h1 class="text-xl font-semibold">Алхам 3 - Төлбөр</h1>
-                    <p class="text-text-secondary">
-                      Та төлбөртэй мэдээний төлбөрийн төрөл сонгоно уу.
-                    </p>
-                  </div>
-
-                  <div
-                    class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-4 lg:gap-8"
-                  >
-                    <div class="border border-gray-200 rounded-lg p-5">
-                      <p class="text-[#B0766C] text-base mb-2">Basic</p>
-                      <div
-                        class="flex flex-col xl:flex-row items-start xl:items-end gap-2"
-                      >
-                        <p class="text-[36px] leading-[44px] font-bold">
-                          ₮15,000
-                        </p>
-                        <p class="text-sm font-medium text-text-secondary mb-1">
-                          1 хэрэглэгч / сар
-                        </p>
-                      </div>
-                      <p class="text-[#6B7280] text-base mt-5">
-                        Тухайн сард платформд нийтлэгдэж байгаа нийт нийтлэл,
-                        агуулгыг унших эрх
-                      </p>
-                      <div class="h-px bg-gray-200 w-full my-5"></div>
-                      <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/check.svg"
-                            alt="check"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            2 нийтлэл бэлэглэх эрх
-                          </p>
-                        </li>
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/markx.svg"
-                            alt="markx"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            Tortor interdum condimentum nunc molestie quam
-                            lectus.
-                          </p>
-                        </li>
-                      </ul>
-                      <button
-                        class="plumaButton mt-5 bg-[#FEF6F5] text-primary w-full"
-                      >
-                        Get started
-                      </button>
-                    </div>
-
-                    <div class="border-3 border-primary rounded-lg p-5">
-                      <div class="flex items-center justify-between">
-                        <p class="text-[#B0766C] text-base mb-2">Best</p>
-                        <p
-                          class="px-2 py-0.5 text-base text-[#B0766C] rounded-full bg-[#FEF6F5]"
-                        >
-                          Most popular
-                        </p>
-                      </div>
-                      <div
-                        class="flex flex-col xl:flex-row items-start xl:items-end gap-2"
-                      >
-                        <p class="text-[36px] leading-[44px] font-bold">
-                          ₮30,000
-                        </p>
-                        <p class="text-sm text-text-secondary mb-1">
-                          1 хэрэглэгч / сар
-                        </p>
-                      </div>
-                      <p class="text-[#6B7280] text-base mt-5">
-                        Улирлын турш платформд нийтлэгдэж байгаа нийт нийтлэл,
-                        агуулгыг унших эрх
-                      </p>
-                      <div class="h-px bg-gray-200 w-full my-5"></div>
-                      <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/check.svg"
-                            alt="check"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            Сар бүр 3 нийтлэл бэлэглэх эрх
-                          </p>
-                        </li>
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/check.svg"
-                            alt="check"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            Tortor interdum condimentum nunc molestie quam
-                            lectus.
-                          </p>
-                        </li>
-                      </ul>
-                      <button class="plumaPrimaryButton mt-5 w-full">
-                        Get started
-                      </button>
-                    </div>
-                    <div class="border border-gray-200 rounded-lg p-5">
-                      <p class="text-[#B0766C] text-base mb-2">Premium</p>
-                      <div
-                        class="flex flex-col xl:flex-row items-start xl:items-end gap-2"
-                      >
-                        <p class="text-[36px] leading-[44px] font-bold">
-                          ₮90,000
-                        </p>
-                        <p class="text-sm text-text-secondary mb-1">
-                          1 хэрэглэгч / сар
-                        </p>
-                      </div>
-                      <p class="text-[#6B7280] text-base mt-5">
-                        Жилийн турш платформд нийтлэгдэж байгаа нийт нийтлэл,
-                        агуулгыг унших эрх
-                      </p>
-                      <div class="h-px bg-gray-200 w-full my-5"></div>
-                      <ul class="space-y-3">
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/check.svg"
-                            alt="check"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            Сар бүр 5 нийтлэл бэлэглэх эрх
-                          </p>
-                        </li>
-                        <li class="flex items-start gap-3">
-                          <img
-                            src="../../assets/icons/markx.svg"
-                            alt="markx"
-                            class="size-6"
-                          />
-                          <p class="text-[#6B7280] text-base">
-                            Сар бүр 5 нийтлэл бэлэглэх эрх
-                          </p>
-                        </li>
-                      </ul>
-                      <button
-                        class="plumaButton mt-5 bg-[#FEF6F5] text-primary w-full"
-                      >
-                        Get started
-                      </button>
-                    </div>
+                    <input type="text" name="groupName" class="plumaInput" />
                   </div>
                 </div>
               </div>

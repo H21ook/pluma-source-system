@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pluma - Нүүр хуудас</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../../css/main.css" />
+    <script src="../../js/journalist.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #f8a698;
+        --color-primary-50: #fef6f5;
+        --color-primary-foreground: #ffffff;
+        --color-primary-light: #ffa69e;
+        --color-primary-dark: #eb8b80;
+        --color-text-disabled: #919eab;
+        --color-text-primary: #212b36;
+        --color-text-secondary: #637381;
+        --color-divider: #dce4e8;
+        --font-manrope: "Manrope", sans-serif;
+      }
+
+      body {
+        @apply font-manrope text-sm font-normal text-text-primary border-gray-200;
+      }
+
+      .plumaLabel {
+        @apply block text-sm text-text-primary;
+      }
+
+      .plumaInput {
+        @apply px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary-light shadow-sm placeholder:text-text-disabled text-sm align-middle;
+      }
+
+      .plumaSearchInput {
+        @apply pr-3 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-primary-light placeholder:text-text-disabled text-base align-middle;
+      }
+
+      .plumaButton {
+        @apply font-medium py-2.5 px-4 rounded-md transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+      }
+
+      .plumaPrimaryButton {
+        @apply bg-primary hover:bg-primary-dark text-primary-foreground font-medium py-2.5 px-4 rounded-md transition duration-200;
+      }
+
+      .plumaCheckbox {
+        @apply appearance-none relative size-5 rounded-sm cursor-pointer border border-gray-200 checked:bg-primary focus:outline-none focus:ring-1 focus:ring-primary-light checked:after:content-[''] checked:after:absolute checked:after:left-[7px] checked:after:top-[3px] checked:after:w-[5px] checked:after:h-[10px] checked:after:border-r-2 checked:after:border-b-2 checked:after:border-solid checked:after:border-primary-foreground checked:after:rotate-45;
+      }
+
+      .plumaIconButton {
+        @apply size-10 rounded-lg flex items-center justify-center transition duration-200 hover:bg-black/10;
+      }
+
+      .categoryItem {
+        @apply py-2.5 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer border-b-2 flex items-center gap-2;
+      }
+
+      .activeCategoryItem {
+        @apply text-text-primary border-primary;
+      }
+
+      .inactiveCategoryItem {
+        @apply text-text-secondary border-transparent hover:text-text-primary;
+      }
+
+      .menuItem {
+        @apply py-3 px-4 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer rounded-md flex items-center gap-4;
+      }
+
+      .activeMenuItem {
+        @apply bg-primary/[8%] text-primary;
+      }
+
+      .inactiveMenuItem {
+        @apply text-text-secondary hover:bg-black/5;
+      }
+
+      .paginationButton {
+        @apply size-10 flex items-center justify-center rounded-md text-base font-medium transition-all duration-200 cursor-pointer hover:bg-black/5;
+      }
+
+      .paginationMoreButton {
+        @apply size-10 flex items-center justify-center rounded-md text-base font-medium;
+      }
+    </style>
+  </head>
+  <body onload="init('detail')">
+    <!-- 1. sidebar
+    2. header -->
+
+    <div class="grid grid-cols-[300px_minmax(300px,_1fr)] h-screen">
+      <!-- sidebar -->
+      <div class="w-[300px] h-screen bg-white border-r border-gray-200">
+        <nav class="px-3 py-5">
+          <div class="px-4 pb-8 pt-5">
+            <img
+              src="../../assets/images/logo.svg"
+              alt="Pluma logo"
+              class="w-[110px] object-contain"
+            />
+          </div>
+          <ul class="flex flex-col mt-2 space-y-4">
+            <li class="menuItem activeMenuItem">
+              <img
+                src="../../assets/icons/home.svg"
+                alt="home"
+                class="size-6"
+              />
+              Нүүр хуудас
+            </li>
+            <!-- <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/briefcase.svg"
+                alt="briefcase"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li> -->
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/document.svg"
+                alt="document"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/bolt.svg"
+                alt="bolt"
+                class="size-6"
+              />
+              Төлбөртэй мэдээ
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/users-group.svg"
+                alt="users-group"
+                class="size-6"
+              />
+              Сэтгүүлчийн жагсаалт
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/calendar.svg"
+                alt="calendar"
+                class="size-6"
+              />
+              Календар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/wallet.svg"
+                alt="wallet"
+                class="size-6"
+              />
+              Төлбөр тооцоо
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main>
+        <!-- header -->
+        <header
+          class="flex items-center justify-between py-6 px-10 border-b border-gray-200"
+        >
+          <div class="relative z-0 lg:max-w-[300px] w-full">
+            <div
+              class="absolute z-[-1] rounded-md bg-gray-100 flex items-center size-full pl-4"
+            >
+              <img
+                src="../../assets/icons/search.svg"
+                alt="search"
+                class="size-5"
+              />
+            </div>
+            <input
+              class="plumaSearchInput w-full pl-12 bg-transparent"
+              type="text"
+              placeholder="Хайх"
+            />
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="dropdownItem relative inline-block text-left">
+              <button class="toggleDropdown plumaIconButton bg-gray-100">
+                <img
+                  src="../../assets/icons/bell.svg"
+                  alt="notification"
+                  class="text-text-secondary size-6"
+                />
+              </button>
+
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-[300px] rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div class="flex items-center justify-between">
+                      <div class="px-3 py-2">
+                        <p class="font-semibold">Мэдэгдэл</p>
+                        <span class="text-xs text-text-secondary"
+                          >Шинээр 4 мэдэгдэл ирсэн байна</span
+                        >
+                      </div>
+                      <img
+                        alt="double-check"
+                        src="../../assets/icons/double-check.svg"
+                        class="size-6 m-2"
+                      />
+                    </div>
+                  </li>
+
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2 border-t border-gray-200">
+                    <button class="plumaButton w-full border border-gray-200">
+                      Бүгдийг үзэх
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="dropdownItem relative inline-block text-left">
+              <div
+                class="toggleDropdown flex items-center gap-2 hover:bg-black/5 rounded-md px-2 cursor-pointer"
+              >
+                <img
+                  src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
+                  alt="Author Image"
+                  class="rounded-full size-10"
+                />
+                <div>
+                  <div class="flex items-center gap-2">
+                    <p class="font-medium">Б.Батбаяр</p>
+                  </div>
+                  <p class="text-xs text-text-secondary">Админ</p>
+                </div>
+                <svg
+                  class="-mr-1 ml-2 h-5 w-5 text-text-secondary cursor-pointer"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      <p class="font-semibold">Э.Тулгаа</p>
+                      <span class="text-xs text-text-secondary"
+                        >tulgaa@gmail.com</span
+                      >
+                    </div>
+                  </li>
+                  <div class="space-y-1 p-2">
+                    <li class="px-3 py-2 rounded-md hover:bg-[#919EAB14]">
+                      Хувийн мэдээлэл
+                    </li>
+                    <li
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Тохиргоо
+                    </li>
+                  </div>
+                  <li class="border-t border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Гарах
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <div class="h-[calc(100vh-90px)] overflow-y-auto">
+          <div class="p-10 max-w-[1600px] min-w-5xl mx-auto space-y-6">
+            <div class="flex items-center justify-between">
+              <div class="flex items-center gap-6">
+                <button
+                  class="plumaIconButton bg-gray-100 border border-gray-200"
+                >
+                  <img
+                    alt="back"
+                    src="../../assets/icons/back.svg"
+                    class="size-5"
+                  />
+                </button>
+                <img
+                  src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
+                  alt="author"
+                  class="size-22 rounded-full"
+                />
+                <h1 class="text-2xl font-bold">Бат-Өлзий Нямбаяр</h1>
+              </div>
+              <div class="flex items-center gap-4">
+                <div>
+                  <div
+                    id="modal"
+                    class="hidden fixed z-10 inset-0 bg-black/50 flex items-center justify-center no-scrollbar"
+                  >
+                    <div
+                      class="relative bg-white p-6 rounded-lg shadow-md w-full mx-4 md:w-lg"
+                    >
+                      <div class="w-full flex items-center justify-between">
+                        <div class="space-y-2">
+                          <h3 class="text-2xl font-semibold">Групп-д нэмэх</h3>
+                        </div>
+
+                        <button
+                          class="closeModal plumaIconButton bg-gray-100 border border-gray-200"
+                        >
+                          <img
+                            alt="close"
+                            src="../../assets/icons/close.svg"
+                            class="size-5"
+                          />
+                        </button>
+                      </div>
+
+                      <div class="space-y-8 mt-8">
+                        <div class="flex items-start gap-6">
+                          <img
+                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
+                            alt="author"
+                            class="size-16 rounded-full"
+                          />
+                          <div class="space-y-1">
+                            <p class="text-text-secondary">
+                              Нэр:
+                              <span class="font-medium text-text-primary ml-2"
+                                >Бат-Өлзий Нямбаяр</span
+                              >
+                            </p>
+                            <p class="text-text-secondary">
+                              Байгууллага:
+                              <span class="font-medium text-text-primary ml-2"
+                                >Nebula agency</span
+                              >
+                            </p>
+                            <p class="text-text-secondary">
+                              Албан тушаал:
+                              <span class="font-medium text-text-primary ml-2"
+                                >-----</span
+                              >
+                            </p>
+                          </div>
+                        </div>
+
+                        <div>
+                          <label>Групп сонгох </label>
+                          <div class="select relative mt-1">
+                            <button
+                              type="button"
+                              class="selectButton w-full h-10 border px-4 border-gray-200 rounded-md flex items-center gap-1 min-w-fit"
+                            >
+                              <div
+                                class="selectTitle text-start whitespace-nowrap text-xs font-medium w-full"
+                              >
+                                <span>Групп 1</span>
+                              </div>
+                              <div class="size-4">
+                                <img
+                                  src="../../assets/icons/arrow-right.svg"
+                                  alt="arrow-right"
+                                  class="size-4 rotate-90"
+                                />
+                              </div>
+                            </button>
+                            <div
+                              class="selectMenu origin-top-right absolute right-0 mt-2 z-10 min-w-56 w-full rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 p-2 hidden max-h-[180px] overflow-y-auto"
+                            >
+                              <div
+                                class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
+                              >
+                                <div>Групп 1</div>
+                              </div>
+                              <div
+                                class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
+                              >
+                                <div>Групп 2</div>
+                              </div>
+                              <div
+                                class="block cursor-pointer text-base hover:bg-gray-100 py-2 px-3"
+                              >
+                                <div>Групп 3</div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="flex items-center justify-between gap-4 mt-8">
+                        <button
+                          class="closeModal plumaButton border border-gray-200"
+                        >
+                          Болих
+                        </button>
+                        <button class="plumaPrimaryButton">Нэмэх</button>
+                      </div>
+                    </div>
+                  </div>
+                  <button
+                    id="openModal"
+                    class="plumaIconButton bg-gray-100 border border-gray-200"
+                  >
+                    <img
+                      alt="add"
+                      src="../../assets/icons/plus.svg"
+                      class="size-5"
+                    />
+                  </button>
+                </div>
+
+                <button
+                  data-active="false"
+                  class="toggleButton size-10 rounded-md border border-gray-200 transition-all duration-200 flex items-center justify-center hover:brightness-90 data-[active='false']:bg-gray-100 data-[active='true']:bg-primary"
+                >
+                  <img
+                    alt="favorite"
+                    src="../../assets/icons/heart.svg"
+                    class="size-5 [[data-active='true']_&]:hidden"
+                  />
+                  <img
+                    alt="favorite"
+                    src="../../assets/icons/color-icon/heart.svg"
+                    class="size-5 hidden [[data-active='true']_&]:block"
+                  />
+                </button>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between gap-8">
+              <div class="relative">
+                <ul
+                  class="flex gap-8 overflow-hidden items-center"
+                  id="categoryList"
+                >
+                  <li
+                    class="categoryItem activeCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Нийтлэлүүд
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Хувийн мэдээлэл
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div id="tabs">
+              <div id="tab1" class="space-y-6">
+                <ul>
+                  <li class="py-4 flex items-center gap-8">
+                    <div class="flex-1">
+                      <p class="text-xs text-text-secondary mb-3">
+                        2024 оны 3 сарын 25
+                      </p>
+                      <div class="">
+                        <div class="flex-1">
+                          <h2 class="text-xl font-bold mb-2 line-clamp-2">
+                            Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                          </h2>
+                          <p
+                            class="text-xs lg:text-sm text-text-secondary line-clamp-3"
+                          >
+                            Цахим сэтгүүл зүйн мэргэжлийн ууган байгууллага
+                            болох Монголын Сайтын холбоо 10 жилийнхээ ойн
+                            хүрээнд мэргэжлийн ёс зүй” сэдэвт сургалтыг
+                            Монголын...
+                          </p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                          <div class="flex items-center gap-2">
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Хувь хүний хөгжил
+                            </div>
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Ёс зүй
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <img
+                              src="../../assets/icons/bookmark.svg"
+                              class="size-5 cursor-pointer"
+                              alt="bookmark"
+                            />
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              class="size-5 cursor-pointer"
+                              alt="more"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <img
+                      src="https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt="News Image"
+                      class="object-cover max-w-1/3 w-[250px] rounded-lg aspect-video"
+                    />
+                  </li>
+                  <li class="py-4 flex items-center gap-8">
+                    <div class="flex-1">
+                      <p class="text-xs text-text-secondary mb-3">
+                        2024 оны 3 сарын 25
+                      </p>
+                      <div class="">
+                        <div class="flex-1">
+                          <h2 class="text-xl font-bold mb-2 line-clamp-2">
+                            Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                          </h2>
+                          <p
+                            class="text-xs lg:text-sm text-text-secondary line-clamp-3"
+                          >
+                            Цахим сэтгүүл зүйн мэргэжлийн ууган байгууллага
+                            болох Монголын Сайтын холбоо 10 жилийнхээ ойн
+                            хүрээнд мэргэжлийн ёс зүй” сэдэвт сургалтыг
+                            Монголын...
+                          </p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                          <div class="flex items-center gap-2">
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Хувь хүний хөгжил
+                            </div>
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Ёс зүй
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <img
+                              src="../../assets/icons/bookmark.svg"
+                              class="size-5 cursor-pointer"
+                              alt="bookmark"
+                            />
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              class="size-5 cursor-pointer"
+                              alt="more"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <img
+                      src="https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt="News Image"
+                      class="object-cover max-w-1/3 w-[250px] rounded-lg aspect-video"
+                    />
+                  </li>
+                  <li class="py-4 flex items-center gap-8">
+                    <div class="flex-1">
+                      <p class="text-xs text-text-secondary mb-3">
+                        2024 оны 3 сарын 25
+                      </p>
+                      <div class="">
+                        <div class="flex-1">
+                          <h2 class="text-xl font-bold mb-2 line-clamp-2">
+                            Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй
+                          </h2>
+                          <p
+                            class="text-xs lg:text-sm text-text-secondary line-clamp-3"
+                          >
+                            Цахим сэтгүүл зүйн мэргэжлийн ууган байгууллага
+                            болох Монголын Сайтын холбоо 10 жилийнхээ ойн
+                            хүрээнд мэргэжлийн ёс зүй” сэдэвт сургалтыг
+                            Монголын...
+                          </p>
+                        </div>
+                        <div class="flex justify-between items-center mt-4">
+                          <div class="flex items-center gap-2">
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Хувь хүний хөгжил
+                            </div>
+                            <div
+                              class="rounded-sm bg-primary/50 py-1 lg:py-2 px-3 uppercase text-[10px]"
+                            >
+                              Ёс зүй
+                            </div>
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <img
+                              src="../../assets/icons/bookmark.svg"
+                              class="size-5 cursor-pointer"
+                              alt="bookmark"
+                            />
+                            <img
+                              src="../../assets/icons/more-horizontal.svg"
+                              class="size-5 cursor-pointer"
+                              alt="more"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <img
+                      src="https://images.unsplash.com/photo-1592503254549-d83d24a4dfab?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                      alt="News Image"
+                      class="object-cover max-w-1/3 w-[250px] rounded-lg aspect-video"
+                    />
+                  </li>
+                </ul>
+              </div>
+              <div id="tab2" class="space-y-6 hidden">
+                <div
+                  class="grid grid-cols-1 md:grid-cols-[minmax(300px,_1fr)_300px] gap-10"
+                >
+                  <div class="space-y-8">
+                    <div>
+                      <p class="text-base font-semibold mb-3">
+                        Товч танилцуулга
+                      </p>
+                      <p class="text-text-secondary text-base">
+                        Lorem ipsum dolor sit amet consectetur. Nunc aenean
+                        ultricies blandit convallis lacinia arcu sit cursus.
+                        Curabitur nibh sagittis vel pharetra. Ipsum amet vitae
+                        arcu quis eget ultrices imperdiet amet. Curabitur purus
+                        tempor dolor venenatis facilisis diam. Lorem ipsum dolor
+                        sit amet consectetur. Nunc aenean ultricies blandit
+                        convallis lacinia arcu sit cursus. Curabitur nibh
+                        sagittis vel pharetra. Ipsum amet vitae arcu quis eget
+                        ultrices imperdiet amet. Curabitur purus tempor dolor
+                        venenatis facilisis diam.
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-base font-semibold mb-3">Ажлын туршлага</p>
+                      <p class="text-text-secondary text-base">
+                        Lorem ipsum dolor sit amet consectetur. Nunc aenean
+                        ultricies blandit convallis lacinia arcu sit cursus.
+                        Curabitur nibh sagittis vel pharetra. Ipsum amet vitae
+                        arcu quis eget ultrices imperdiet amet. Curabitur purus
+                        tempor dolor venenatis facilisis diam. Lorem ipsum dolor
+                        sit amet consectetur.
+                      </p>
+                    </div>
+                    <div>
+                      <p class="text-base font-semibold mb-3">Үнэлгээ</p>
+
+                      <div class="grid grid-cols-8 bg-gray-50 rounded-lg">
+                        <div
+                          class="col-span-3 border-r border-gray-200 space-y-6 p-8 flex flex-col items-center"
+                        >
+                          <span class="text-text-secondary"
+                            >Дундаж үнэлгээ</span
+                          >
+                          <span class="text-3xl font-bold">4/5</span>
+                          <div class="text-center space-y-3">
+                            <div class="flex items-center gap-1">
+                              <img
+                                alt="star"
+                                src="../../assets/icons/star.svg"
+                                class="size-6"
+                              />
+                              <img
+                                alt="star"
+                                src="../../assets/icons/star.svg"
+                                class="size-6"
+                              />
+                              <img
+                                alt="star"
+                                src="../../assets/icons/star.svg"
+                                class="size-6"
+                              />
+                              <img
+                                alt="star"
+                                src="../../assets/icons/star.svg"
+                                class="size-6"
+                              />
+                              <img
+                                alt="star"
+                                src="../../assets/icons/star-gray.svg"
+                                class="size-6"
+                              />
+                            </div>
+                            <span class="text-text-secondary"
+                              >(8.24kreviews)</span
+                            >
+                          </div>
+                        </div>
+                        <div class="col-span-5 space-y-4 p-8">
+                          <div class="flex items-center gap-4">
+                            <span class="font-semibold whitespace-nowrap"
+                              >5 Star</span
+                            >
+                            <div
+                              class="w-full relative overflow-hidden h-1 bg-[#F8A6981F] rounded-full after:transition-all after:duration-200 after:content-[''] after:absolute after:rounded-full after:left-0 after:top-0 after:bottom-0 after:w-[60%] after:h-full after:bg-primary"
+                            ></div>
+                            <span class="text-text-secondary">35.74k</span>
+                          </div>
+                          <div class="flex items-center gap-4">
+                            <span class="font-semibold whitespace-nowrap"
+                              >4 Star</span
+                            >
+                            <div
+                              class="w-full relative overflow-hidden h-1 bg-[#F8A6981F] rounded-full after:transition-all after:duration-200 after:content-[''] after:absolute after:rounded-full after:left-0 after:top-0 after:bottom-0 after:w-[60%] after:h-full after:bg-primary"
+                            ></div>
+                            <span class="text-text-secondary">79.41k</span>
+                          </div>
+                          <div class="flex items-center gap-4">
+                            <span class="font-semibold whitespace-nowrap"
+                              >3 Star</span
+                            >
+                            <div
+                              class="w-full relative overflow-hidden h-1 bg-[#F8A6981F] rounded-full after:transition-all after:duration-200 after:content-[''] after:absolute after:rounded-full after:left-0 after:top-0 after:bottom-0 after:w-[60%] after:h-full after:bg-primary"
+                            ></div>
+                            <span class="text-text-secondary">60.69k</span>
+                          </div>
+                          <div class="flex items-center gap-4">
+                            <span class="font-semibold whitespace-nowrap"
+                              >2 Star</span
+                            >
+                            <div
+                              class="w-full relative overflow-hidden h-1 bg-[#F8A6981F] rounded-full after:transition-all after:duration-200 after:content-[''] after:absolute after:rounded-full after:left-0 after:top-0 after:bottom-0 after:w-[60%] after:h-full after:bg-primary"
+                            ></div>
+                            <span class="text-text-secondary">79.73k</span>
+                          </div>
+                          <div class="flex items-center gap-4">
+                            <span class="font-semibold whitespace-nowrap"
+                              >2 Star</span
+                            >
+                            <div
+                              class="w-full relative overflow-hidden h-1 bg-[#F8A6981F] rounded-full after:transition-all after:duration-200 after:content-[''] after:absolute after:rounded-full after:left-0 after:top-0 after:bottom-0 after:w-[60%] after:h-full after:bg-primary"
+                            ></div>
+                            <span class="text-text-secondary">52.53k</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <p class="text-base font-semibold mb-3">
+                        Тогтмол бичдэг сэдвүүд
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="space-y-8">
+                    <!-- <div class="p-6 bg-gray-50 rounded-lg space-y-5">
+                      <div class="flex items-center gap-1">
+                        <span class="text-text-secondary">Төрсөн огноо:</span>
+                        <span class="font-medium">1997.04.26</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-text-secondary">Байгууллага:</span>
+                        <span class="font-medium">Nebula agency</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-text-secondary">Утас:</span>
+                        <span class="font-medium">(+976) 8877 2882</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-text-secondary">И-мэйл :</span>
+                        <span class="font-medium">archnymba@gmail.com</span>
+                      </div>
+                      <div class="flex items-center gap-1">
+                        <span class="text-text-secondary">Албан тушаал:</span>
+                        <span class="font-medium">-------</span>
+                      </div>
+                    </div>
+                    <div>
+                      <p class="text-base font-medium">Social хаяг</p>
+                      <div class="mt-4 flex flex-col gap-4">
+                        <div class="flex items-center gap-6">
+                          <img
+                            src="../../assets/icons/ln.svg"
+                            alt="linkedin"
+                            class="size-[22px]"
+                          />
+                          <a href="https://www.facebook.com/name"
+                            >https://www.facebook.com/name</a
+                          >
+                        </div>
+                        <div class="flex items-center gap-6">
+                          <img
+                            src="../../assets/icons/x.svg"
+                            alt="X twitter"
+                            class="size-[22px]"
+                          />
+                          <a href="https://www.instagram.com/name"
+                            >https://www.instagram.com/name</a
+                          >
+                        </div>
+                        <div class="flex items-center gap-6">
+                          <img
+                            src="../../assets/icons/fb.svg"
+                            alt="facebook"
+                            class="size-[22px]"
+                          />
+                          <a href="linkedin.com/in/name"
+                            >linkedin.com/in/name</a
+                          >
+                        </div>
+                        <div class="flex items-center gap-6">
+                          <img
+                            src="../../assets/icons/link.svg"
+                            alt="link"
+                            class="size-[22px]"
+                          />
+                          <a href="https://www.twitter.com/name"
+                            >https://www.twitter.com/name</a
+                          >
+                        </div>
+                      </div>
+                    </div> -->
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

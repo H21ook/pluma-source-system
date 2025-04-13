@@ -1,5 +1,5 @@
 var scrollStep = 100;
-
+var currentStep = 1; // Default step
 function initScroll() {
   var scroll = document.getElementById("categoryList");
   var rightButton = document.getElementById("categoryRightButton");
@@ -56,8 +56,6 @@ function rightScroll() {
   var scrollWidth = scroll.scrollWidth;
   var clientWidth = scroll.clientWidth;
 
-  console.log("scrollLeft ", scrollWidth - clientWidth, scrollLeft);
-
   var isEnd = scrollWidth - clientWidth <= scrollLeft;
 
   if (isEnd) {
@@ -106,6 +104,21 @@ function leftScroll() {
 }
 
 function init(page) {
+  const buttons = document.querySelectorAll(".toggleButton");
+
+  if (buttons) {
+    buttons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const target = button.getAttribute("data-active");
+        if (target === "true") {
+          button.setAttribute("data-active", "false");
+        } else {
+          button.setAttribute("data-active", "true");
+        }
+      });
+    });
+  }
+
   const selectList = document.querySelectorAll(".select");
 
   if (selectList?.length > 0) {
@@ -125,7 +138,6 @@ function init(page) {
           for (let i = 0; i < selectItems.length; i++) {
             const item = selectItems[i];
             item.addEventListener("click", function (event) {
-              console.log(event.target?.outerHTML);
               selectTitle.innerHTML = event.target?.outerHTML;
               selectMenu.classList.add("hidden");
             });
@@ -133,7 +145,6 @@ function init(page) {
         }
 
         document.addEventListener("click", function (event) {
-          console.log(event.target);
           if (
             !selectButton.contains(event.target) &&
             !selectMenu.contains(event.target)
@@ -169,6 +180,39 @@ function init(page) {
       }
     });
   }
+
+  if (page === "detail") {
+    // Dialog нээх товч
+    document.getElementById("openModal").addEventListener("click", function () {
+      const dialog = document.getElementById("modal");
+      dialog.classList.remove("hidden"); // Dialog нээх
+      document.body.style.overflow = "hidden"; // Body scroll-ыг нуух
+    });
+
+    // Dialog хаах товч
+    const closeButtons = document.querySelectorAll(".closeModal");
+
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const dialog = document.getElementById("modal");
+        dialog.classList.add("hidden"); // Dialog хаах
+        document.body.style.overflow = "auto"; // Body scroll-ыг сэргээх
+      });
+    });
+
+    document
+      .getElementById("modal")
+      .addEventListener("click", function (event) {
+        if (event.target.id === "modal") {
+          event.target?.classList?.add("hidden"); // Dialog хаах
+          document.body.style.overflow = "auto"; // Body scroll-ыг сэргээх
+        }
+      });
+  }
+
+  if (page === "create") {
+    renderSteps();
+  }
 }
 
 window.addEventListener("resize", initScroll);
@@ -198,50 +242,56 @@ function selectCategory(e) {
   category.classList.add("activeCategoryItem");
 }
 
-function selectSubCategory(e) {
-  e.preventDefault();
-  var category = e.target;
-  var allCategoryList = document.getElementById("subCategoryList").children;
+function renderSteps() {
+  const steps = document.getElementById("steps");
+  if (steps) {
+    const indicator = steps.querySelector("#indicator");
+    if (indicator) {
+      if (currentStep > 1) {
+        document.getElementById("backStep").classList.remove("hidden");
+      } else {
+        document.getElementById("backStep").classList.add("hidden");
+      }
 
-  for (var i = 0; i < allCategoryList.length; i++) {
-    allCategoryList[i].classList.remove("activeCategoryItem");
-    allCategoryList[i].classList.add("inactiveCategoryItem");
+      if (indicator.children.length === currentStep) {
+        document.getElementById("createGroup").classList.remove("hidden");
+        document.getElementById("nextStep").classList.add("hidden");
+      } else {
+        document.getElementById("createGroup").classList.add("hidden");
+        document.getElementById("nextStep").classList.remove("hidden");
+      }
 
-    if (category === allCategoryList[i]) {
-      var tabs = document.getElementById("subTabs").children;
-      for (var j = 0; j < tabs.length; j++) {
-        if (i === j) {
-          tabs[j].classList.remove("hidden");
+      for (let i = 0; i < indicator.children.length; i++) {
+        const item = indicator.children[i];
+
+        if (i + 1 <= currentStep) {
+          item.classList.add("bg-primary");
+          item.classList.remove("bg-gray-200");
         } else {
-          tabs[j].classList.add("hidden");
+          item.classList.add("bg-gray-200");
+          item.classList.remove("bg-primary");
         }
       }
+
+      const contents = steps.querySelectorAll(`.stepContent`);
+
+      contents.forEach((content) => {
+        if (content.id === `step${currentStep}`) {
+          content.classList.remove("hidden");
+        } else {
+          content.classList.add("hidden");
+        }
+      });
     }
   }
-  category.classList.remove("inactiveCategoryItem");
-  category.classList.add("activeCategoryItem");
 }
 
-function selectSub2Category(e) {
-  e.preventDefault();
-  var category = e.target;
-  var allCategoryList = document.getElementById("sub2CategoryList").children;
+function nextStep() {
+  currentStep++;
+  renderSteps();
+}
 
-  for (var i = 0; i < allCategoryList.length; i++) {
-    allCategoryList[i].classList.remove("activeCategoryItem");
-    allCategoryList[i].classList.add("inactiveCategoryItem");
-
-    if (category === allCategoryList[i]) {
-      var tabs = document.getElementById("sub2Tabs").children;
-      for (var j = 0; j < tabs.length; j++) {
-        if (i === j) {
-          tabs[j].classList.remove("hidden");
-        } else {
-          tabs[j].classList.add("hidden");
-        }
-      }
-    }
-  }
-  category.classList.remove("inactiveCategoryItem");
-  category.classList.add("activeCategoryItem");
+function prevStep() {
+  currentStep--;
+  renderSteps();
 }
