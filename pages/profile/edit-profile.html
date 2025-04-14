@@ -1,0 +1,1032 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pluma - Нүүр хуудас</title>
+    <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/js-datepicker@5.18.4/dist/datepicker.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/js-datepicker@5.18.4/dist/datepicker.min.js"></script>
+    <link rel="stylesheet" href="../../css/main.css" />
+    <script src="../../js/profile.js"></script>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-primary: #f8a698;
+        --color-primary-50: #fef6f5;
+        --color-primary-foreground: #ffffff;
+        --color-primary-light: #ffa69e;
+        --color-primary-dark: #eb8b80;
+        --color-text-disabled: #919eab;
+        --color-text-primary: #212b36;
+        --color-text-secondary: #637381;
+        --color-divider: #dce4e8;
+        --font-manrope: "Manrope", sans-serif;
+      }
+
+      body {
+        @apply font-manrope text-sm font-normal text-text-primary border-gray-200;
+      }
+
+      .plumaLabel {
+        @apply block text-sm text-text-primary;
+      }
+
+      .plumaInput {
+        @apply px-3 py-2.5 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-primary placeholder:text-text-disabled text-sm align-middle;
+      }
+
+      .plumaSearchInput {
+        @apply pr-3 py-2 rounded-md focus:outline-none focus:ring-1 focus:ring-offset-0 focus:ring-primary-light placeholder:text-text-disabled text-base align-middle;
+      }
+
+      .plumaButton {
+        @apply font-medium py-2.5 px-4 rounded-md transition duration-200 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50;
+      }
+
+      .plumaPrimaryGhostButton {
+        @apply text-primary font-bold text-sm px-1.5 py-2 rounded-md hover:bg-primary/20;
+      }
+
+      .plumaPrimaryButton {
+        @apply bg-primary hover:bg-primary-dark text-primary-foreground font-medium py-2.5 px-4 rounded-md transition duration-200;
+      }
+
+      .plumaCheckbox {
+        @apply appearance-none relative size-5 rounded-sm cursor-pointer border border-gray-200 checked:bg-primary focus:outline-none focus:ring-1 focus:ring-primary-light checked:after:content-[''] checked:after:absolute checked:after:left-[7px] checked:after:top-[3px] checked:after:w-[5px] checked:after:h-[10px] checked:after:border-r-2 checked:after:border-b-2 checked:after:border-solid checked:after:border-primary-foreground checked:after:rotate-45;
+      }
+
+      .plumaIconButton {
+        @apply size-10 rounded-lg flex items-center justify-center transition duration-200 hover:bg-black/10;
+      }
+
+      .categoryItem {
+        @apply py-2.5 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer border-b-2 flex items-center gap-2;
+      }
+
+      .activeCategoryItem {
+        @apply text-text-primary border-primary;
+      }
+
+      .inactiveCategoryItem {
+        @apply text-text-secondary border-transparent hover:text-text-primary;
+      }
+
+      .menuItem {
+        @apply py-3 px-4 transition-all duration-200 text-base whitespace-nowrap font-semibold cursor-pointer rounded-md flex items-center gap-4;
+      }
+
+      .activeMenuItem {
+        @apply bg-primary/[8%] text-primary;
+      }
+
+      .inactiveMenuItem {
+        @apply text-text-secondary hover:bg-black/5;
+      }
+    </style>
+  </head>
+  <body onload="init('edit-profile')">
+    <!-- 1. sidebar
+    2. header -->
+
+    <div class="grid grid-cols-[280px_minmax(300px,_1fr)] h-screen">
+      <!-- sidebar -->
+      <div class="w-[280px] h-screen bg-white border-r border-gray-200">
+        <nav class="px-3 py-5">
+          <div class="px-4 pb-8 pt-5">
+            <img
+              src="../../assets/images/logo.svg"
+              alt="Pluma logo"
+              class="w-[110px] object-contain"
+            />
+          </div>
+          <ul class="flex flex-col mt-2 space-y-4">
+            <li class="menuItem activeMenuItem">
+              <img
+                src="../../assets/icons/home.svg"
+                alt="home"
+                class="size-6"
+              />
+              Нүүр хуудас
+            </li>
+            <!-- <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/briefcase.svg"
+                alt="briefcase"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li> -->
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/document.svg"
+                alt="document"
+                class="size-6"
+              />
+              Ажлын талбар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/bolt.svg"
+                alt="bolt"
+                class="size-6"
+              />
+              Төлбөртэй мэдээ
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/users-group.svg"
+                alt="users-group"
+                class="size-6"
+              />
+              Сэтгүүлчийн жагсаалт
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/calendar.svg"
+                alt="calendar"
+                class="size-6"
+              />
+              Календар
+            </li>
+            <li class="menuItem inactiveMenuItem">
+              <img
+                src="../../assets/icons/wallet.svg"
+                alt="wallet"
+                class="size-6"
+              />
+              Төлбөр тооцоо
+            </li>
+          </ul>
+        </nav>
+      </div>
+      <main>
+        <!-- header -->
+        <header
+          class="flex items-center justify-between py-6 px-10 border-b border-gray-200"
+        >
+          <div class="relative z-0 lg:max-w-[300px] w-full">
+            <div
+              class="absolute z-[-1] rounded-md bg-gray-100 flex items-center size-full pl-4"
+            >
+              <img
+                src="../../assets/icons/search.svg"
+                alt="search"
+                class="size-5"
+              />
+            </div>
+            <input
+              class="plumaSearchInput w-full pl-12 bg-transparent"
+              type="text"
+              placeholder="Хайх"
+            />
+          </div>
+          <div class="flex items-center gap-4">
+            <div class="dropdownItem relative inline-block text-left">
+              <button class="toggleDropdown plumaIconButton bg-gray-100">
+                <img
+                  src="../../assets/icons/bell.svg"
+                  alt="notification"
+                  class="text-text-secondary size-6"
+                />
+              </button>
+
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-[300px] rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div class="flex items-center justify-between">
+                      <div class="px-3 py-2">
+                        <p class="font-semibold">Мэдэгдэл</p>
+                        <span class="text-xs text-text-secondary"
+                          >Шинээр 4 мэдэгдэл ирсэн байна</span
+                        >
+                      </div>
+                      <img
+                        alt="double-check"
+                        src="../../assets/icons/double-check.svg"
+                        class="size-6 m-2"
+                      />
+                    </div>
+                  </li>
+
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2">
+                    <div class="px-3 py-2 space-y-1 cursor-pointer">
+                      <p class="font-bold">Article Assigned</p>
+                      <p class="font-medium max-w-[250px] truncate">
+                        “Цахим сэтгүүл зүй ба мэргэжлийн ёс зүй”
+                      </p>
+                      <span
+                        class="text-xs text-text-secondary flex items-center gap-1"
+                      >
+                        <img
+                          alt="time"
+                          src="../../assets/icons/time.svg"
+                          class="size-4"
+                        />
+                        07 Sep 2024</span
+                      >
+                    </div>
+                  </li>
+                  <li class="p-2 border-t border-gray-200">
+                    <button class="plumaButton w-full border border-gray-200">
+                      Бүгдийг үзэх
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="dropdownItem relative inline-block text-left">
+              <div
+                class="toggleDropdown flex items-center gap-2 hover:bg-black/5 rounded-md px-2 cursor-pointer"
+              >
+                <img
+                  src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
+                  alt="Author Image"
+                  class="rounded-full size-10"
+                />
+                <div>
+                  <div class="flex items-center gap-2">
+                    <p class="font-medium">Б.Батбаяр</p>
+                  </div>
+                  <p class="text-xs text-text-secondary">Админ</p>
+                </div>
+                <svg
+                  class="-mr-1 ml-2 h-5 w-5 text-text-secondary cursor-pointer"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  fill="currentColor"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  />
+                </svg>
+              </div>
+              <div
+                class="dropdownMenu origin-top-right absolute right-0 mt-2 z-10 w-56 rounded-md shadow-lg bg-white ring-1 ring-gray-200 ring-opacity-5 hidden"
+              >
+                <ul
+                  role="menu"
+                  aria-orientation="vertical"
+                  aria-labelledby="dropdownButton"
+                >
+                  <li class="border-b border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      <p class="font-semibold">Э.Тулгаа</p>
+                      <span class="text-xs text-text-secondary"
+                        >tulgaa@gmail.com</span
+                      >
+                    </div>
+                  </li>
+                  <div class="space-y-1 p-2">
+                    <li class="px-3 py-2 rounded-md hover:bg-[#919EAB14]">
+                      Хувийн мэдээлэл
+                    </li>
+                    <li
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Тохиргоо
+                    </li>
+                  </div>
+                  <li class="border-t border-gray-200 p-2">
+                    <div
+                      class="px-3 py-2 rounded-md hover:bg-[#919EAB14] hover:bg-[#919EAB14]"
+                    >
+                      Гарах
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <!-- content -->
+        <div class="h-[calc(100vh-90px)] overflow-y-auto">
+          <div class="p-10 max-w-[1600px] min-w-5xl mx-auto">
+            <div class="space-y-6">
+              <div class="space-y-4">
+                <button class="plumaIconButton bg-gray-100">
+                  <img
+                    src="../../assets/icons/back.svg"
+                    alt="back"
+                    class="size-5"
+                  />
+                </button>
+              </div>
+
+              <!-- Category list -->
+              <div class="relative border-b-1 border-gray-200">
+                <button
+                  id="categoryLeftButton"
+                  class="absolute transition-all duration-200 top-1/2 -translate-y-1/2 left-0 flex items-center bg-white px-2 cursor-pointer size-10 invisible"
+                  onclick="leftScroll()"
+                >
+                  <img
+                    src="../../assets/icons/arrow-right.svg"
+                    class="size-4 rotate-180"
+                    alt="arrow-left"
+                  />
+                </button>
+                <button
+                  id="categoryRightButton"
+                  class="absolute transition-all duration-200 top-1/2 -translate-y-1/2 right-0 flex items-center bg-white px-2 cursor-pointer size-10 invisible"
+                  onclick="rightScroll()"
+                >
+                  <img
+                    src="../../assets/icons/arrow-right.svg"
+                    class="size-4"
+                    alt="arrow-right"
+                  />
+                </button>
+                <ul
+                  class="flex gap-8 overflow-hidden mb-[-1px] items-center"
+                  id="categoryList"
+                >
+                  <li
+                    class="categoryItem activeCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    General
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Billing
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Notifications
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Social Links
+                  </li>
+                  <li
+                    class="categoryItem inactiveCategoryItem"
+                    onclick="selectCategory(event)"
+                  >
+                    Change Password
+                  </li>
+                </ul>
+              </div>
+
+              <div id="tabs">
+                <div id="tab1" class="py-8 space-y-8">
+                  <h1 class="text-2xl font-bold">Edit profile</h1>
+
+                  <div
+                    class="relative border border-dashed border-[#919EAB52] rounded-full p-2 w-fit"
+                  >
+                    <label
+                      for="fileInput"
+                      class="absolute inset-0 bg-transparent text-xs text-text-secondary rounded-full cursor-pointer"
+                    ></label>
+                    <div
+                      class="rounded-full bg-[#F4F6F8] flex flex-col items-center justify-center w-32 h-32"
+                    >
+                      <div id="avatarEmpty" class="flex flex-col items-center">
+                        <img
+                          src="../../assets/icons/camera.svg"
+                          alt="camera"
+                          class="size-6 mb-1"
+                        />
+                        <p class="text-xs text-text-secondary">Upload photo</p>
+                      </div>
+                      <img
+                        id="avatarImage"
+                        class="rounded-full size-full hidden object-cover"
+                        alt="profile"
+                      />
+                    </div>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept=".jpg,.png,.jpeg"
+                      hidden
+                    />
+                  </div>
+                  <form class="grid grid-cols-1 md:grid-cols-2 gap-x-5 gap-y-4">
+                    <input
+                      id="firstName"
+                      type="text"
+                      class="plumaInput w-full"
+                      placeholder="Овог"
+                    />
+                    <input
+                      id="lastName"
+                      type="text"
+                      class="plumaInput w-full"
+                      placeholder="Нэр"
+                    />
+                    <input
+                      id="datepickerInput"
+                      type="text"
+                      autocomplete="off"
+                      class="plumaInput w-full col-start-1"
+                      placeholder="Төрсөн огноо"
+                    />
+                    <input
+                      id="firstName"
+                      type="text"
+                      class="plumaInput w-full"
+                      placeholder="Утас"
+                    />
+                    <input
+                      id="email"
+                      type="email"
+                      class="plumaInput w-full"
+                      placeholder="И-мэйл"
+                    />
+                    <div class="md:col-span-2 flex justify-end">
+                      <button class="plumaPrimaryButton w-full md:w-fit">
+                        Хадгалах
+                      </button>
+                    </div>
+                  </form>
+                </div>
+
+                <!-- Billing tab -->
+                <div id="tab2" class="hidden py-8">
+                  <div class="grid grid-cols-1 md:grid-cols-8 gap-x-5 gap-y-4">
+                    <div class="md:col-span-5 space-y-6">
+                      <div
+                        class="rounded-xl shadow-md p-4 md:p-6 bg-white space-y-6"
+                      >
+                        <div class="flex justify-between items-start">
+                          <div>
+                            <p
+                              class="uppercase text-text-secondary font-bold text-sm"
+                            >
+                              Your plan
+                            </p>
+                            <h1 class="text-2xl font-bold mt-6">Premium</h1>
+                          </div>
+                          <div class="flex items-center gap-2">
+                            <button
+                              class="border rounded-md px-2 py-1 font-medium border-gray-200"
+                            >
+                              Cancel Plan
+                            </button>
+                            <button
+                              class="border rounded-md px-2 py-1 font-medium border-[#00AB557A] text-primary"
+                            >
+                              Upgrade Plan
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div
+                        class="rounded-xl shadow-md p-4 md:p-6 bg-white space-y-6"
+                      >
+                        <div class="max-w-xs space-y-6">
+                          <div
+                            class="flex justify-between items-start border border-gray-200 rounded-lg px-3 py-2"
+                          >
+                            <div class="px-3 py-4">
+                              <img
+                                src="../../assets/icons/mastercard.svg"
+                                alt="card"
+                                class="h-6 w-9"
+                              />
+                              <p class="uppercase font-semibold text-sm mt-2">
+                                **** **** **** 5680
+                              </p>
+                            </div>
+
+                            <button class="plumaIconButton">
+                              <img
+                                src="../../assets/icons/more-vertical.svg"
+                                alt="more"
+                                class="size-5"
+                              />
+                            </button>
+                          </div>
+
+                          <p
+                            class="uppercase text-text-secondary font-bold text-sm"
+                          >
+                            Payment method
+                          </p>
+
+                          <div>
+                            <div
+                              id="modal"
+                              class="hidden fixed z-10 inset-0 bg-black/50 flex items-center justify-center no-scrollbar"
+                            >
+                              <div
+                                class="relative bg-white p-6 rounded-lg shadow-md w-full mx-4 md:w-xl"
+                              >
+                                <div
+                                  class="w-full flex items-start justify-between"
+                                >
+                                  <div class="space-y-2">
+                                    <h3 class="font-semibold">
+                                      Credit / Debit Card
+                                    </h3>
+                                    <p class="text-text-secondary">
+                                      We support Mastercard, Visa, Discover and
+                                      Stripe.
+                                    </p>
+                                  </div>
+
+                                  <div class="flex gap-2 items-center">
+                                    <img
+                                      src="../../assets/icons/mastercard.svg"
+                                      alt="card"
+                                      class="h-6 w-9"
+                                    />
+                                    <img
+                                      src="../../assets/icons/visa.svg"
+                                      alt="card"
+                                      class="h-6 w-9"
+                                    />
+                                  </div>
+                                </div>
+
+                                <div class="mt-8">
+                                  <div class="relative">
+                                    <label
+                                      for="cardNumber"
+                                      class="absolute -top-2 left-2 px-1 bg-white text-text-disabled"
+                                      >Банкны картын дугаар</label
+                                    >
+                                    <input
+                                      type="text"
+                                      id="cardNumber"
+                                      autocomplete="off"
+                                      class="plumaInput w-full !py-4 !text-base"
+                                      placeholder="**** **** **** 5678"
+                                    />
+                                  </div>
+                                  <div class="grid grid-cols-2 gap-8 mt-8">
+                                    <div class="relative">
+                                      <label
+                                        for="cardNumber"
+                                        class="absolute -top-2 left-2 px-1 bg-white text-text-disabled"
+                                        >Хүчинтэй хугацаа</label
+                                      >
+                                      <input
+                                        type="text"
+                                        id="cardNumber"
+                                        autocomplete="off"
+                                        class="plumaInput w-full !py-4 !text-base"
+                                        placeholder="Сар/жил"
+                                      />
+                                    </div>
+                                    <div class="relative">
+                                      <label
+                                        for="cardNumber"
+                                        class="absolute -top-2 left-2 px-1 bg-white text-text-disabled"
+                                        >CVV код</label
+                                      >
+                                      <input
+                                        type="text"
+                                        id="cardNumber"
+                                        autocomplete="off"
+                                        class="plumaInput w-full !py-4 !text-base"
+                                        placeholder="CVV"
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div
+                                  class="flex items-center justify-end gap-4 mt-8"
+                                >
+                                  <button
+                                    class="closeModal plumaButton border border-gray-200"
+                                  >
+                                    Болих
+                                  </button>
+                                  <button class="plumaPrimaryButton">
+                                    Хадгалах
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                            <button
+                              id="openModal"
+                              class="plumaPrimaryGhostButton flex items-center gap-2"
+                            >
+                              <img
+                                src="../../assets/icons/add.svg"
+                                alt="add"
+                                class="size-5"
+                              />
+                              Add new card
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="md:col-span-3 space-y-6 mt-4 md:mt-0">
+                      <p class="font-semibold text-base">Invoice history</p>
+                      <table class="w-full">
+                        <tbody>
+                          <tr>
+                            <td>08 Oct 2020</td>
+                            <td>$15.00</td>
+                            <td class="text-end">
+                              <button class="plumaButton text-primary">
+                                PDF
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>14 Jul 2020</td>
+                            <td>$15.00</td>
+                            <td class="text-end">
+                              <button class="plumaButton text-primary">
+                                PDF
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>11 May 2020</td>
+                            <td>$15.00</td>
+                            <td class="text-end">
+                              <button class="plumaButton text-primary">
+                                PDF
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>12 Jan 2020</td>
+                            <td>$15.00</td>
+                            <td class="text-end">
+                              <button class="plumaButton text-primary">
+                                PDF
+                              </button>
+                            </td>
+                          </tr>
+                          <tr>
+                            <td>14 Mar 2020</td>
+                            <td>$15.00</td>
+                            <td class="text-end">
+                              <button class="plumaButton text-primary">
+                                PDF
+                              </button>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button
+                        class="plumaPrimaryGhostButton flex items-center gap-2"
+                      >
+                        <p class="text-sm font-bold text-primary">
+                          All invoices
+                        </p>
+                        <img
+                          src="../../assets/icons/arrow-right-primary.svg"
+                          alt="arrow"
+                          class="size-4"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Notifications tab -->
+                <div id="tab3" class="hidden py-8">
+                  <div
+                    class="md:rounded-xl md:shadow-md md:p-6 md:bg-white space-y-8"
+                  >
+                    <div class="space-y-4">
+                      <p
+                        class="uppercase text-text-secondary font-bold text-sm"
+                      >
+                        Activity
+                      </p>
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4"
+                          >Email me when someone comments onmy article</span
+                        >
+                      </label>
+
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4"
+                          >Email me when someone answers on my form</span
+                        >
+                      </label>
+
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4"
+                          >Email me hen someone follows me</span
+                        >
+                      </label>
+                    </div>
+
+                    <div class="space-y-4">
+                      <p
+                        class="uppercase text-text-secondary font-bold text-sm"
+                      >
+                        Application
+                      </p>
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4">News and announcements</span>
+                      </label>
+
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4">Weekly product updates</span>
+                      </label>
+
+                      <label
+                        class="group flex items-center cursor-pointer peer"
+                      >
+                        <input
+                          type="checkbox"
+                          id="toggleSwitch"
+                          class="sr-only"
+                        />
+                        <div
+                          class="relative w-9 h-4 transition-all duration-200 bg-[#919EAB] rounded-full shadow-inner group-has-checked:bg-primary/40"
+                        >
+                          <div
+                            class="absolute w-5 h-5 transition-all duration-200 top-1/2 bg-[#F9FAFB] rounded-full left-0 shadow-md -translate-y-1/2 group-has-checked:bg-primary group-has-checked:left-full group-has-checked:-translate-x-full"
+                          ></div>
+                        </div>
+                        <span class="flex-1 ml-4">Weekly blog digest</span>
+                      </label>
+                    </div>
+                    <div class="flex justify-end">
+                      <button class="plumaPrimaryButton w-full md:w-fit">
+                        Хадгалах
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Socail links tab -->
+                <div id="tab4" class="py-8 space-y-8 hidden">
+                  <p class="text-base font-semibold">Social links</p>
+                  <div class="space-y-6">
+                    <!-- facebool, instagram, linkedin, twitter  -->
+                    <div>
+                      <div class="flex items-center gap-4 mb-3">
+                        <img
+                          src="../../assets/icons/fb.svg"
+                          alt="facebook"
+                          class="size-5"
+                        />
+                        <p class="text-base font-medium">Facebook</p>
+                      </div>
+                      <input
+                        type="text"
+                        class="plumaInput w-full"
+                        placeholder="https://facebook.com/name"
+                      />
+                    </div>
+
+                    <div>
+                      <div class="flex items-center gap-4 mb-3">
+                        <img
+                          src="../../assets/icons/instagram.svg"
+                          alt="instagram"
+                          class="size-5"
+                        />
+                        <p class="text-base font-medium">Instagram</p>
+                      </div>
+                      <input
+                        type="text"
+                        class="plumaInput w-full"
+                        placeholder="https://instagram.com/name"
+                      />
+                    </div>
+
+                    <div>
+                      <div class="flex items-center gap-4 mb-3">
+                        <img
+                          src="../../assets/icons/ln.svg"
+                          alt="linkedin"
+                          class="size-5"
+                        />
+                        <p class="text-base font-medium">Linkedin</p>
+                      </div>
+
+                      <input
+                        type="text"
+                        class="plumaInput w-full"
+                        placeholder="https://linkedin.com/in/name"
+                      />
+                    </div>
+
+                    <div>
+                      <div class="flex items-center gap-4 mb-3">
+                        <img
+                          src="../../assets/icons/x.svg"
+                          alt="twitter"
+                          class="size-5"
+                        />
+                        <p class="text-base font-medium">Twitter</p>
+                      </div>
+
+                      <input
+                        type="text"
+                        class="plumaInput w-full"
+                        placeholder="https://twitter.com/name"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Change password tab -->
+                <div id="tab5" class="hidden py-8">
+                  <div
+                    class="md:rounded-xl md:shadow-md md:p-6 md:bg-white space-y-6"
+                  >
+                    <input
+                      type="password"
+                      autocomplete="off"
+                      class="plumaInput w-full"
+                      placeholder="Old password"
+                    />
+                    <div>
+                      <input
+                        type="password"
+                        autocomplete="off"
+                        class="plumaInput w-full"
+                        placeholder="New password"
+                      />
+                      <div class="mt-2 flex gap-1">
+                        <img
+                          src="../../assets/icons/tooltip.svg"
+                          alt="password requirements"
+                          class="size-4 cursor-pointer"
+                        />
+                        <p class="text-text-secondary text-sm">
+                          Password must be minimum 8+
+                        </p>
+                      </div>
+                    </div>
+
+                    <input
+                      type="password"
+                      autocomplete="off"
+                      class="plumaInput w-full"
+                      placeholder="Confirm new password"
+                    />
+
+                    <div class="flex justify-end">
+                      <button class="plumaPrimaryButton w-full md:w-fit">
+                        Хадгалах
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

@@ -56,8 +56,6 @@ function rightScroll() {
   var scrollWidth = scroll.scrollWidth;
   var clientWidth = scroll.clientWidth;
 
-  console.log("scrollLeft ", scrollWidth - clientWidth, scrollLeft);
-
   var isEnd = scrollWidth - clientWidth <= scrollLeft;
 
   if (isEnd) {
@@ -124,9 +122,7 @@ function init(page) {
         if (selectItems) {
           for (let i = 0; i < selectItems.length; i++) {
             const item = selectItems[i];
-            console.log("iotem", selectTitle);
             item.addEventListener("click", function (event) {
-              console.log(event.target?.outerHTML);
               selectTitle.innerHTML = event.target?.outerHTML;
               selectMenu.classList.add("hidden");
             });
@@ -134,7 +130,6 @@ function init(page) {
         }
 
         document.addEventListener("click", function (event) {
-          console.log(event.target);
           if (
             !selectButton.contains(event.target) &&
             !selectMenu.contains(event.target)
@@ -218,38 +213,32 @@ function init(page) {
           emptyImage.classList.remove("hidden");
         }
       });
-  }
 
-  if (page === "index2") {
-    // Dialog-ийн гадна дарж хаах
-    const dialog = document.getElementById("modal");
-    const dialogOpenButton = document.getElementById("openModal");
-    const dialogCloseButton = document.getElementById("closeModal");
+    document.getElementById("openModal").addEventListener("click", function () {
+      const dialog = document.getElementById("modal");
+      dialog.classList.remove("hidden"); // Dialog нээх
+      document.body.style.overflow = "hidden"; // Body scroll-ыг нуух
+    });
 
-    if (dialog) {
-      // Dialog нээх товч
-      if (dialogOpenButton) {
-        dialogOpenButton.addEventListener("click", function () {
-          dialog.classList.remove("hidden"); // Dialog нээх
-          document.body.style.overflow = "hidden"; // Body scroll-ыг нуух
-        });
-      }
+    // Dialog хаах товч
+    const closeButtons = document.querySelectorAll(".closeModal");
 
-      // Dialog хаах товч
-      if (dialogCloseButton) {
-        dialogCloseButton.addEventListener("click", function () {
-          dialog.classList.add("hidden"); // Dialog хаах
-          document.body.style.overflow = "auto"; // Body scroll-ыг сэргээх
-        });
-      }
+    closeButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const dialog = document.getElementById("modal");
+        dialog.classList.add("hidden"); // Dialog хаах
+        document.body.style.overflow = "auto"; // Body scroll-ыг сэргээх
+      });
+    });
 
-      dialog.addEventListener("click", function (event) {
+    document
+      .getElementById("modal")
+      .addEventListener("click", function (event) {
         if (event.target.id === "modal") {
           event.target?.classList?.add("hidden"); // Dialog хаах
           document.body.style.overflow = "auto"; // Body scroll-ыг сэргээх
         }
       });
-    }
   }
 }
 
