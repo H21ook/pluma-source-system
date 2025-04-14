@@ -11,7 +11,7 @@
       href="https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://pulipulichen.github.io/blogger/posts/2016/11/r-text-mining/wordcloud2.js"></script>
     <link rel="stylesheet" href="../../css/main.css" />
     <script src="../../js/home.js"></script>
     <style type="text/tailwindcss">
@@ -746,117 +746,20 @@
             </table>
 
             <div class="grid grid-cols-2 gap-6">
-              <div class="rounded-lg border border-gray-200 px-6 py-5">
+              <div
+                class="rounded-lg border border-gray-200 px-6 py-5 flex flex-col"
+              >
                 <div class="flex items-center justify-between pb-5">
-                  <p class="text-lg font-semibold">Pending Review Requests</p>
+                  <p class="text-lg font-semibold">Word Bubble</p>
                   <button class="plumaButton border border-gray-200">
                     See all
                   </button>
                 </div>
 
-                <table class="w-full border-collapse">
-                  <thead>
-                    <tr class="bg-[#F8FAFC] border-b border-gray-200">
-                      <th class="py-4 font-medium rounded-tl-lg">Title</th>
-                      <th class="py-4 font-medium">Factchecker</th>
-                      <th class="py-4 font-medium rounded-tr-lg">
-                        Date Submitted
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-b border-gray-200">
-                      <td class="py-4 truncate max-w-[120px] px-5">
-                        Climate Change Report
-                      </td>
-                      <td class="py-4 px-6 text-center">
-                        <div class="flex items-center gap-2 justify-center">
-                          <img
-                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
-                            alt="Author Image"
-                            class="rounded-full size-6"
-                          />
-                          <div>
-                            <p class="font-bold">Б.Батбаяр</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-4 px-6 text-center">2024-10-01</td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="py-4 truncate max-w-[120px] px-5">
-                        Climate Change Report
-                      </td>
-                      <td class="py-4 px-6 text-center">
-                        <div class="flex items-center gap-2 justify-center">
-                          <img
-                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
-                            alt="Author Image"
-                            class="rounded-full size-6"
-                          />
-                          <div>
-                            <p class="font-bold">Б.Батбаяр</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-4 px-6 text-center">2024-10-01</td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="py-4 truncate max-w-[120px] px-5">
-                        Climate Change Report
-                      </td>
-                      <td class="py-4 px-6 text-center">
-                        <div class="flex items-center gap-2 justify-center">
-                          <img
-                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
-                            alt="Author Image"
-                            class="rounded-full size-6"
-                          />
-                          <div>
-                            <p class="font-bold">Б.Батбаяр</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-4 px-6 text-center">2024-10-01</td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="py-4 truncate max-w-[120px] px-5">
-                        Climate Change Report
-                      </td>
-                      <td class="py-4 px-6 text-center">
-                        <div class="flex items-center gap-2 justify-center">
-                          <img
-                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
-                            alt="Author Image"
-                            class="rounded-full size-6"
-                          />
-                          <div>
-                            <p class="font-bold">Б.Батбаяр</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-4 px-6 text-center">2024-10-01</td>
-                    </tr>
-                    <tr class="border-b border-gray-200">
-                      <td class="py-4 truncate max-w-[120px] px-5">
-                        Climate Change Report
-                      </td>
-                      <td class="py-4 px-6 text-center">
-                        <div class="flex items-center gap-2 justify-center">
-                          <img
-                            src="https://framerusercontent.com/images/gMHfU4xaMiq7jHpCpTNtqnK6ulQ.jpg"
-                            alt="Author Image"
-                            class="rounded-full size-6"
-                          />
-                          <div>
-                            <p class="font-bold">Б.Батбаяр</p>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="py-4 px-6 text-center">2024-10-01</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div
+                  id="word-cloud"
+                  class="border border-gray-200 p-6 rounded-lg flex-1"
+                ></div>
               </div>
 
               <div class="rounded-lg border border-gray-200 px-6 py-5">
